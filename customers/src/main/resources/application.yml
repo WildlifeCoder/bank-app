@@ -1,0 +1,63 @@
+
+server:
+  port: 8100
+
+spring:
+  application:
+    name: "customers"
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+  # config:
+  #   import:
+  #    - "application_prod.yml"
+  #    - "application_qa.yml"
+  # profiles:
+  #  active:
+  #    - "qa"
+
+  datasource:
+    url: jdbc:h2:mem:customersdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+  # Configuration of profile by config server
+  profiles:
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071"
+
+
+#build:
+#  version: "v0.0.2"
+
+#support:
+#  message: "Welcome to the customers DEFAULT bank system"
+#  contactInfo:
+#    name: "Miguel Coy"
+#    email: "example@mail.com"
+#  contactNumbers:
+#    - "(57) 3114441122"
+#    - "(57) 3006667778"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
+

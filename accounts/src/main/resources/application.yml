@@ -1,0 +1,58 @@
+
+server:
+  port: 8101
+
+spring:
+  application:
+    name: "accounts"
+
+
+  # Configuration of profiles by file
+  # config:
+  #  import:
+  #    - "application_prod.yml"
+  #    - "application_qa.yml"
+  # profiles:
+  #  active:
+  #    - "prod"
+
+  datasource:
+    url: jdbc:h2:mem:accountsdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+
+  # Configuration of profile by config server
+  profiles:
+    active: "prod"
+  config:
+    import: "optional:configserver:http://localhost:8071"
+
+
+#build:
+#  version: "v0.0.2"
+
+#support:
+#  message: "Welcome to the accounts bank system"
+#  contactInfo:
+#    name: "Miguel Coy"
+#    email: "example@mail.com"
+#  contactNumbers:
+#    - "(57) 3114441122"
+#    - "(57) 3006667778"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

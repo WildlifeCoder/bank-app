@@ -1,0 +1,29 @@
+services:
+  customers:
+    image: "macoyt/my-bank-customers:v0.0.2"
+    container_name: my-bank-customers
+    ports:
+      - "8100:8100"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - accenture
+
+  accounts:
+    image: "macoyt/my-bank-accounts:v0.0.2"
+    container_name: my-bank-accounts
+    ports:
+      - "8101:8101"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - accenture
+
+networks:
+  accenture:
+    driver: bridge
+
