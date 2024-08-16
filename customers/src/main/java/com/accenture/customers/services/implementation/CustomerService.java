@@ -1,13 +1,17 @@
 package com.accenture.customers.services.implementation;
 
+import com.accenture.customers.dto.AccountDto;
 import com.accenture.customers.dto.CustomerDto;
+import com.accenture.customers.dto.CustomerWithAccounts;
 import com.accenture.customers.entity.Customer;
 import com.accenture.customers.exceptions.ResourceAlreadyExist;
 import com.accenture.customers.exceptions.ResourceNotFound;
 import com.accenture.customers.mappers.CustomerMapper;
 import com.accenture.customers.repository.CustomerRepository;
 import com.accenture.customers.services.ICustomerService;
+import com.accenture.customers.services.client.CustomerFeignClient;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 public class CustomerService implements ICustomerService {
 
     private CustomerRepository customerRepository;
+    private CustomerFeignClient customerFeignClient;
 
 
     @Override
@@ -42,6 +47,14 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    public CustomerDto fetchById(Long customerId) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(
+                () -> new ResourceNotFound("Client", "email", customerId.toString())
+        );
+        return CustomerMapper.mapCustomerToDTO(customer, new CustomerDto());
+    }
+
+    @Override
     public CustomerDto fetchCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email).orElseThrow(
                 () -> new ResourceNotFound("Client", "email", email)
@@ -59,6 +72,21 @@ public class CustomerService implements ICustomerService {
         } else {
             throw new ResourceNotFound("Resource", "Customer", "[]");
         }
+    }
+
+    @Override
+    public CustomerWithAccounts fetchCustomersWithAccountsByDocument(String document) {
+        Customer customer = customerRepository.findByDocument(document).orElseThrow(
+                () -> new ResourceNotFound("Client", "Document", document)
+        );
+        CustomerWithAccounts customerWithAccounts = CustomerMapper.mapCustomerToDTOWithAccounts(customer, new CustomerWithAccounts());
+
+        ResponseEntity<List<AccountDto>> accountsResponse = customerFeignClient.fetchCustomerAccounts(customer.getCustomerId());
+        List<AccountDto> accounts = accountsResponse.getBody();
+
+        customerWithAccounts.setAccounts(accounts);
+
+        return customerWithAccounts;
     }
 
 

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/bank-app.iml" filepath="$PROJECT_DIR$/.idea/bank-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/configserver/configserver.iml" filepath="$PROJECT_DIR$/configserver/configserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/customers/customers.iml" filepath="$PROJECT_DIR$/customers/customers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eurekaserver/eurekaserver.iml" filepath="$PROJECT_DIR$/eurekaserver/eurekaserver.iml" />
     </modules>
   </component>
 </project>

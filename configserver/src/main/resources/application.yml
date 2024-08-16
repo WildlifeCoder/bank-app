@@ -2,13 +2,18 @@
 spring:
   application:
     name: "configserver"
-  rabbitmq:
-    host: "localhost"
-    port: 5672
-    username: guest
-    password: guest
+
   profiles:
+  #  active: native
     active: git
+
+ # cloud:
+ #   config:
+ #     server:
+ #       native:
+ #       search-locations: "classpath:/config"
+
+
   cloud:
     config:
       server:
@@ -18,9 +23,6 @@ spring:
           timeout: 5
           clone-on-start: true
           force-pull: true
-        #native:
-          #search-locations: "file:C:/Users/miguel.a.coy.triana/Documents/microservices/config"
-          #search-locations: "classpath:/config
 
 server:
   port: 8071

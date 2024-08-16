@@ -81,6 +81,7 @@ public class AccountController {
                 .body(account);
     }
 
+
     @Operation(
             summary = "Get all account of customer by customerID",
             description = "Handle the request to get all accounts of customer"
@@ -108,6 +109,9 @@ public class AccountController {
                 .status(HttpStatus.OK)
                 .body(accounts);
     }
+
+
+
 
     @Operation(
             summary = "Creation of account",

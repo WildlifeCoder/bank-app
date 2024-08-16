@@ -151,6 +151,37 @@ public class CustomerController {
                 .body(customerDto);
     }
 
+
+    @Operation(
+            summary = "Request to get client by id",
+            description = "Handle the request of the existent client by id in the bank system"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "HTTP STATUS OK",
+                    content = @Content(
+                            schema = @Schema(implementation = CustomerDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "HTTP STATUS NOT FOUND",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
+            )
+    })
+    @GetMapping(value = "/fetchById/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CustomerDto> fetchById(
+            @PathVariable
+            Long customerId) {
+        CustomerDto customerDto = customerService.fetchById(customerId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerDto);
+    }
+
     @Operation(
             summary = "Request to get client by email",
             description = "Handle the request of the existent client by email in the bank system"

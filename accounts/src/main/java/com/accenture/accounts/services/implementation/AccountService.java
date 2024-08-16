@@ -1,6 +1,8 @@
 package com.accenture.accounts.services.implementation;
 
 import com.accenture.accounts.dto.AccountDto;
+import com.accenture.accounts.dto.AccountWithCustomerDto;
+import com.accenture.accounts.dto.CustomerDto;
 import com.accenture.accounts.dto.NewAccountDto;
 import com.accenture.accounts.entities.Account;
 
@@ -8,19 +10,24 @@ import com.accenture.accounts.exceptions.ResourceNotFound;
 import com.accenture.accounts.mappers.AccountMapper;
 import com.accenture.accounts.repository.AccountRepository;
 import com.accenture.accounts.services.IAccountService;
+
+import com.accenture.accounts.services.customer.AccountFeignCustomer;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 @AllArgsConstructor
 public class AccountService implements IAccountService {
     private AccountRepository accountRepository;
+    private AccountFeignCustomer accountFeignCustomer;
 
     @Override
     public AccountDto create(NewAccountDto accountDto) {
@@ -65,6 +72,32 @@ public class AccountService implements IAccountService {
        AccountMapper.mapToAccount(accountDto, account);
        accountRepository.save(account);
        return accountDto;
+    }
+
+
+
+    @Override
+    public AccountWithCustomerDto fetchAccountWithCustomerByAccountNumber(Long accountNumber) {
+
+        Account account = accountRepository.findById(accountNumber).orElseThrow(
+                () -> new ResourceNotFound("Account", "Id", accountNumber.toString())
+        );
+
+
+        ResponseEntity<CustomerDto> customerResponse = accountFeignCustomer.fetchById(account.getCustomerId());
+
+        CustomerDto customer = customerResponse.getBody();
+
+
+
+
+
+        AccountWithCustomerDto customerWithAccounts = AccountMapper.mapAccountToAccountWithCustomerDto(account, new AccountWithCustomerDto());
+
+
+        customerWithAccounts.setCustomer(customer);
+
+        return customerWithAccounts;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.accenture.accounts.mappers;
 
 import com.accenture.accounts.dto.AccountDto;
+import com.accenture.accounts.dto.AccountWithCustomerDto;
 import com.accenture.accounts.dto.NewAccountDto;
 import com.accenture.accounts.entities.Account;
 
@@ -31,5 +32,17 @@ public class AccountMapper {
         account.setCustomerId(accountDto.getCustomerId());
 
         return account;
+    }
+
+
+
+
+    public static AccountWithCustomerDto mapAccountToAccountWithCustomerDto(Account account, AccountWithCustomerDto accountWithCustomerDto) {
+        accountWithCustomerDto.setAccountNumber(account.getAccountNumber());
+        accountWithCustomerDto.setAccountType(account.getAccountType());
+        accountWithCustomerDto.setAccountType(account.getAccountType());
+        accountWithCustomerDto.setBalance(account.getBalance());
+        accountWithCustomerDto.setCustomerId(account.getCustomerId());
+        return accountWithCustomerDto;
     }
 }

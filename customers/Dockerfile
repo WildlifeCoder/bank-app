@@ -27,8 +27,6 @@ ENTRYPOINT ["java", "-jar", "customers-0.0.1-SNAPSHOT.jar"]
 #execute build image google-jib
 # ./mvnw compile jib:build
 
-#
-
 # docker compose up
 # docker compose up -d
 # docker compose down
@@ -46,3 +44,12 @@ ENTRYPOINT ["java", "-jar", "customers-0.0.1-SNAPSHOT.jar"]
 
 #docker run --rm -d --name rabbitmq -p 5672:5672 -p 15672-15672 rabbitmq:3.13-management
 # user and pass: guest
+
+# Run docker container with MySql db
+# docker run -p 3306:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -v <path_pc/container> -d mysql
+
+# docker run -p 3306:3306 --name accountsdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=accountsdb -v C:\Users\miguel.a.coy.triana\Documents\microservices\volumes\accenture\accounts:\var\lib\mysql -d mysql
+
+# docker run -p 3307:3306 --name customersdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=customersdb -v /Users/miguel.a.coy.triana/Documents/microservices/volumes/accenture/customers:/var/lib/mysql -d mysql
+
+# docker run -p 3306:3306 --name customersdb -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=customersdb -v /mnt/c/Users/miguel.a.coy.triana/Documents/microservices/volumes/accenture/customers:/var/lib/mysql -d mysql
